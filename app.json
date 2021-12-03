@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "Soldier-app-font",
+    "slug": "Soldier-app-font",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "Soldier-app-font"
+}
