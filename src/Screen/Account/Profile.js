@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     ImageBackground,
@@ -10,6 +10,7 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import DocumentPicker from 'react-native-document-picker';
+import Pdf from 'react-native-pdf';
 import base64 from 'react-native-base64';
 import RNFetchBlob from 'rn-fetch-blob';
 
@@ -22,9 +23,12 @@ import { useNavigation } from '@react-navigation/native';
 
 const Profile = () => {
 
+    const navigation = useNavigation();
+
     const [state, initState] = React.useState({
         profile_data: null,
         user_token: null,
+        pdf_data: null,
     })
 
     const setState = (value) => {
@@ -63,26 +67,49 @@ const Profile = () => {
     const upload_file_pdf = async () => {
         try {
             const res = await DocumentPicker.pick({
-                type: [DocumentPicker.types.pdf],
+                type: [DocumentPicker.types.allFiles],
             })
-            // console.log(res[0])
 
             const fileName = res[0].uri.replace("file://", "")
-            // console.log("fileName : ", fileName)
+            let database64 = ''
             let data = ''
 
-            RNFetchBlob.fs.readStream(fileName, 'base64', 4095).then((ifsteam) => {
-                // console.log("ifsteam : ", ifsteam)
+            RNFetchBlob.fs.readStream(
+                fileName,
+                'base64',
+                4095)
+                .then((ifstream) => {
+                    ifstream.open()
+                    ifstream.onData((data) => {
 
-                // console.log('checkifsteam._onData : ',ifsteam._onData((data)))
-                // ifsteam.open()
+                        // database64 = database64 + data
+                        // // console.log("database64 : ", database64)
 
-                console.log("_onData : ", ifsteam._onData)
+                        // let base64 = `data:${res[0].type};base64,` + database64
 
-                // ifsteam._onData((data)=>{
-                //     console.log('check data : ',_onData)
-                // })
-            })
+                        // const param = {
+                        //     base64: base64,
+                        //     name: res[0].name,
+                        //     type: res[0].type,
+                        //     size: res[0].size,
+                        //     fileName: res[0].name
+                        // }
+
+                        // // console.log("param : ", param)
+
+                        // setState({
+                        //     pdf_data: param
+                        // })
+
+                        setTimeout(() => {
+                            upload_database()
+                        }, 2000);
+                    })
+                    ifstream.onError((err) => {
+                        console.log('oops', err)
+                    })
+
+                })
 
 
         } catch (err) {
@@ -92,6 +119,12 @@ const Profile = () => {
             }
         }
     }
+
+    const upload_database = () => {
+        console.log("1")
+    }
+
+
 
     return (
         <KeyboardAwareScrollView>
@@ -137,8 +170,38 @@ const Profile = () => {
                     </TouchableOpacity>
                 </View>
 
-            </View>
-        </KeyboardAwareScrollView>
+                <View >
+                    {state.pdf_data != null ?
+
+                        // < TouchableOpacity
+                        //     onPress={() => { download_pdf() }}
+                        //     style={styles.buttonRegister}>
+                        //     <Text styles={styles.buttonText}>
+                        //         {"โหลดไฟล์ PDF"}
+                        //     </Text>
+                        // </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => { navigation.navigate('Account', { screen: 'PDF', params: { data: state.pdf_data } }) }}
+                            style={styles.buttonRegister}
+                        >
+                            <Text styles={styles.buttonText}>
+                                {"เปิดไฟล์ PDF"}
+                            </Text>
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity
+                            style={styles.buttonRegister}
+                            disabled={true}>
+                            <Text styles={styles.buttonText}>
+                                {"อัปโหลดไฟล์ PDF ก่อน"}
+                            </Text>
+                        </TouchableOpacity>
+                    }
+
+                </View>
+
+            </View >
+        </KeyboardAwareScrollView >
     );
 }
 

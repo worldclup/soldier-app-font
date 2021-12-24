@@ -17,6 +17,8 @@ import Main from '../Screen/Account/Main';
 import Profile from '../Screen/Account/Profile';
 import Logout from '../Screen/Account/Logout';
 
+import pdf_view from '../Component/PDF/pdf_view';
+
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -25,6 +27,7 @@ const Account = () => {
         <Stack.Navigator>
             <Stack.Screen options={{ headerShown: true }} name="LoginScreen" component={Login} />
             <Stack.Screen options={{ headerShown: true }} name="Register" component={Register} />
+            <Stack.Screen options={{ headerTitle: '', headerShown: true }} name="PDF" component={pdf_view} />
         </Stack.Navigator>
     )
 }
