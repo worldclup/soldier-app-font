@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
     View,
     ImageBackground,
@@ -29,6 +29,8 @@ const Profile = () => {
         profile_data: null,
         user_token: null,
         pdf_data: null,
+        hide_box: false,
+        description: null,
     })
 
     const setState = (value) => {
@@ -38,19 +40,25 @@ const Profile = () => {
         })
     }
 
+    const handleChange = (e, name) => {
+        setState({
+            [name]: e,
+        })
+    }
+
     useEffect(() => {
         get_user()
+        // get_userpdf()
     }, [])
 
     const get_user = async () => {
-        // console.log("body : ", body)
         try {
             await AsyncStorage.getItem('user_token').then(user_token => {
                 get(`api/v1/user/get_profile`, user_token).then(res => {
                     if (res.success) {
-
                         setState({
-                            profile_data: res.result
+                            profile_data: res.result,
+                            pdf_data: res.result.pdf_text
                         })
 
                     } else {
@@ -82,28 +90,24 @@ const Profile = () => {
                     ifstream.open()
                     ifstream.onData((data) => {
 
-                        // database64 = database64 + data
-                        // // console.log("database64 : ", database64)
+                        database64 = database64 + data
+                        // console.log("database64 : ", database64)
 
-                        // let base64 = `data:${res[0].type};base64,` + database64
+                        let base64 = `data:${res[0].type};base64,` + database64
 
-                        // const param = {
-                        //     base64: base64,
-                        //     name: res[0].name,
-                        //     type: res[0].type,
-                        //     size: res[0].size,
-                        //     fileName: res[0].name
-                        // }
+                        const param = {
+                            base64: base64,
+                            name: res[0].name,
+                            type: res[0].type,
+                            size: res[0].size,
+                            fileName: res[0].name
+                        }
 
-                        // // console.log("param : ", param)
+                        setState({
+                            pdf_data: param,
+                            hide_box: true,
+                        })
 
-                        // setState({
-                        //     pdf_data: param
-                        // })
-
-                        setTimeout(() => {
-                            upload_database()
-                        }, 2000);
                     })
                     ifstream.onError((err) => {
                         console.log('oops', err)
@@ -120,11 +124,33 @@ const Profile = () => {
         }
     }
 
-    const upload_database = () => {
-        console.log("1")
+    const upload_database = async () => {
+
+        let body = {
+            user_id: state.profile_data.user_id,
+            pdf_data: state.pdf_data
+        }
+
+        try {
+
+            await post(body, 'api/v1/user/upload_userpdf', null).then(res => {
+                if (res.success) {
+                    alert("อัปโหลด PDF เสร็จเรียบร้อย")
+
+                    get_user()
+                    setState({
+                        hide_box: false
+                    })
+                } else {
+                    alert(res.error_message);
+                }
+            })
+
+        } catch (error) {
+            alert(error);
+        }
+
     }
-
-
 
     return (
         <KeyboardAwareScrollView>
@@ -134,6 +160,28 @@ const Profile = () => {
 
                 <View style={styles.ContainerHeader}>
                     <Text style={styles.TextLabelHeader}>ข้อมูลส่วนตัว</Text>
+                </View>
+
+                <View style={{ alignItems: 'center' }}>
+                    {state.pdf_data != null ?
+                        <TouchableOpacity
+                            onPress={() => { navigation.navigate('Account', { screen: 'PDF', params: { data: state.profile_data.pdf_text } }) }}
+                            style={styles.buttonRegister}
+                        >
+                            <Text styles={styles.buttonText}>
+                                {"ตรวจสอบข้อมูล PDX"}
+                            </Text>
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity
+                            style={styles.buttonRegister}
+                            disabled={true}>
+                            <Text styles={styles.buttonText}>
+                                {"อัปโหลดไฟล์ PDF ก่อน"}
+                            </Text>
+                        </TouchableOpacity>
+                    }
+
                 </View>
 
                 <View style={{ marginBottom: 30 }} />
@@ -160,45 +208,34 @@ const Profile = () => {
                     </View>
                 </View>
 
-                <View >
-                    <TouchableOpacity
-                        onPress={() => { upload_file_pdf() }}
-                        style={styles.buttonRegister}>
-                        <Text styles={styles.buttonText}>
-                            {"อัพโหลดไฟล์ PDF"}
-                        </Text>
-                    </TouchableOpacity>
-                </View>
+                <View style={{ marginBottom: 30 }} />
 
-                <View >
-                    {state.pdf_data != null ?
+                <View style={{ alignItems: 'center' }}>
+                    <View style={styles.DescriptionTextInput}>
+                        <TextInput
+                            style={styles.TextInput}
+                            placeholder={'ข้อมูลเพิ่มเติม'}
+                            // keyboardType="numeric"
+                            underlineColorAndroid="transparent"
+                            onChangeText={e => handleChange(e, 'description')}
+                        />
+                    </View>
 
-                        // < TouchableOpacity
-                        //     onPress={() => { download_pdf() }}
-                        //     style={styles.buttonRegister}>
-                        //     <Text styles={styles.buttonText}>
-                        //         {"โหลดไฟล์ PDF"}
-                        //     </Text>
-                        // </TouchableOpacity>
+                    {state.description != null ?
                         <TouchableOpacity
-                            onPress={() => { navigation.navigate('Account', { screen: 'PDF', params: { data: state.pdf_data } }) }}
-                            style={styles.buttonRegister}
-                        >
+                            style={styles.buttonDescription}
+                            disabled={true}>
                             <Text styles={styles.buttonText}>
-                                {"เปิดไฟล์ PDF"}
+                                {'บันทึก'}
                             </Text>
                         </TouchableOpacity>
                         :
-                        <TouchableOpacity
-                            style={styles.buttonRegister}
-                            disabled={true}>
-                            <Text styles={styles.buttonText}>
-                                {"อัปโหลดไฟล์ PDF ก่อน"}
-                            </Text>
-                        </TouchableOpacity>
+                        null
                     }
 
                 </View>
+
+
 
             </View >
         </KeyboardAwareScrollView >
@@ -240,11 +277,29 @@ const styles = StyleSheet.create({
         // alignItems: 'center',
         backgroundColor: '#fff',
         height: 40,
-
+        marginTop: 10,
+        width: 300,
+    },
+    DescriptionTextInput: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        // alignItems: 'center',
+        backgroundColor: '#fff',
+        height: 100,
         marginTop: 10,
         width: 300,
     },
     buttonRegister: {
+        width: '100%',
+        width: 300,
+        height: 40,
+        borderRadius: 10,
+        backgroundColor: "#00FF00",
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 50,
+    },
+    buttonDescription: {
         width: '100%',
         width: 300,
         height: 40,

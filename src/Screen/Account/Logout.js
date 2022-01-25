@@ -7,7 +7,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
-const Logout = () => {
+const Logout_app = () => {
 
     const navigation = useNavigation();
 
@@ -24,7 +24,7 @@ const Logout = () => {
 
     useEffect(() => {
         user_tokenprofile()
-    })
+    },[])
 
     const user_tokenprofile = () => {
         AsyncStorage.getItem('user_token').then(user_token => {
@@ -65,4 +65,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Logout;
+export default Logout_app;
