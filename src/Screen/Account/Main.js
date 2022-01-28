@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Component } from 'react';
 import {
     View,
     ImageBackground,
@@ -11,50 +11,48 @@ import {
 import { get, post } from '../../service/service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { useNavigation } from '@react-navigation/native';
+// import { render } from 'react-dom';
 
-const Main = () => {
+class Main extends Component {
 
-    const navigation = useNavigation();
-
-    const [state, initState] = React.useState({
-        user_data: null,
-    })
-
-    const setState = (value) => {
-        initState({
-            ...state,
-            ...value
-        })
+    constructor() {
+        super();
+        this.state = {
+            user_data: null,
+        }
     }
 
-    useEffect(() => {
-        user_tokenprofile()
-    })
+    componentDidMount() {
+        this.user_tokenprofile()
+    }
 
-    const user_tokenprofile = () => {
+    user_tokenprofile = () => {
         AsyncStorage.getItem('user_token').then(user_token => {
-            setState({
+            this.setState({
                 user_token: user_token
             })
         })
     }
 
-    const user_logout = () => {
+    user_logout = () => {
         AsyncStorage.removeItem('user_token').then(result => {
-            setState({
+            this.setState({
                 user_token: result,
             });
-            navigation.navigate('Account', { screen: 'Login' });
+            this.props.navigation.navigate('Account', { screen: 'Login' });
         });
     }
 
-    return (
-        <View>
-            <Text>Main</Text>
-        </View>
-    );
+    render() {
+        return (
+            <View>
+                <Text>Main</Text>
+            </View>
+        );
+    }
 }
+
+
 
 const styles = StyleSheet.create({
     buttonRegister: {

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Component } from 'react';
 import {
     View,
     ImageBackground,
@@ -19,44 +19,49 @@ import RNFS from 'react-native-fs';
 import { get, post } from '../../service/service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { useNavigation } from '@react-navigation/native';
+import moment from 'moment';
 
-const Profile = () => {
+class Profile extends Component {
 
-    const navigation = useNavigation();
-
-    const [state, initState] = React.useState({
-        profile_data: null,
-        user_token: null,
-        pdf_data: null,
-        hide_box: false,
-        description: null,
-    })
-
-    const setState = (value) => {
-        initState({
-            ...state,
-            ...value
-        })
+    constructor() {
+        super();
+        this.state = {
+            profile_data: null,
+            user_token: null,
+            pdf_data: '',
+            hide_box: true,
+            description: '',
+        }
     }
 
-    const handleChange = (e, name) => {
-        setState({
+
+    handleChange = (e, name) => {
+        this.setState({
             [name]: e,
+        }, () => {
+            if (this.state.description != '') {
+                this.setState({
+                    hide_box: false
+                })
+            }
+            else {
+                this.setState({
+                    hide_box: true
+                })
+            }
         })
     }
 
-    useEffect(() => {
-        get_user()
-        // get_userpdf()
-    }, [])
+    componentDidMount() {
+        this.get_user()
+    }
 
-    const get_user = async () => {
+    get_user = async () => {
         try {
             await AsyncStorage.getItem('user_token').then(user_token => {
                 get(`api/v1/user/get_profile`, user_token).then(res => {
                     if (res.success) {
-                        setState({
+                        this.setState({
                             profile_data: res.result,
                             pdf_data: res.result.pdf_text
                         })
@@ -72,7 +77,18 @@ const Profile = () => {
 
     }
 
-    const upload_file_pdf = async () => {
+    upload_description = async () => {
+        let body = {
+            user_id: this.state.profile_data.user_id,
+            username: this.state.profile_data.username,
+            time: moment().format('DD-MM-YYYY HH:mm'),
+            description: this.state.description
+        }
+
+        console.log("body : ", body)
+    }
+
+    upload_file_pdf = async () => {
         try {
             const res = await DocumentPicker.pick({
                 type: [DocumentPicker.types.allFiles],
@@ -103,7 +119,7 @@ const Profile = () => {
                             fileName: res[0].name
                         }
 
-                        setState({
+                        this.setState({
                             pdf_data: param,
                             hide_box: true,
                         })
@@ -124,11 +140,11 @@ const Profile = () => {
         }
     }
 
-    const upload_database = async () => {
+    upload_database = async () => {
 
         let body = {
-            user_id: state.profile_data.user_id,
-            pdf_data: state.pdf_data
+            user_id: this.state.profile_data.user_id,
+            pdf_data: this.state.pdf_data
         }
 
         try {
@@ -138,7 +154,7 @@ const Profile = () => {
                     alert("อัปโหลด PDF เสร็จเรียบร้อย")
 
                     get_user()
-                    setState({
+                    this.setState({
                         hide_box: false
                     })
                 } else {
@@ -152,94 +168,66 @@ const Profile = () => {
 
     }
 
-    return (
-        <KeyboardAwareScrollView>
-            <View>
 
-                <View style={{ marginBottom: 20 }} />
+    render() {
+        return (
+            <KeyboardAwareScrollView>
+                <View>
 
-                <View style={styles.ContainerHeader}>
-                    <Text style={styles.TextLabelHeader}>ข้อมูลส่วนตัว</Text>
-                </View>
+                    <View style={{ marginBottom: 20 }} />
 
-                <View style={{ alignItems: 'center' }}>
-                    {state.pdf_data != null ?
+                    <View style={styles.ContainerHeader}>
+                        <Text style={styles.TextLabelHeader}>ข้อมูลส่วนตัว</Text>
+                    </View>
+
+                    <View style={{ alignItems: 'center' }}>
+
                         <TouchableOpacity
-                            onPress={() => { navigation.navigate('Account', { screen: 'PDF', params: { data: state.profile_data.pdf_text } }) }}
+                            onPress={() => { this.props.navigation.navigate('Account', { screen: 'PDF', params: { data: this.state.profile_data.pdf_text } }) }}
                             style={styles.buttonRegister}
                         >
                             <Text styles={styles.buttonText}>
                                 {"ตรวจสอบข้อมูล PDX"}
                             </Text>
                         </TouchableOpacity>
-                        :
-                        <TouchableOpacity
-                            style={styles.buttonRegister}
-                            disabled={true}>
-                            <Text styles={styles.buttonText}>
-                                {"อัปโหลดไฟล์ PDF ก่อน"}
-                            </Text>
-                        </TouchableOpacity>
-                    }
 
-                </View>
-
-                <View style={{ marginBottom: 30 }} />
-
-                <View style={styles.Container}>
-                    <Text style={styles.TextLabel}>ชื่อ - นามสกุล</Text>
-                    <View style={styles.ContainerTextInput}>
-                        <Text style={styles.TextInput}>{!state.profile_data ? null : state.profile_data.first_name}</Text>
-                        <Text style={styles.TextInput}>{!state.profile_data ? null : state.profile_data.last_name}</Text>
-                    </View>
-                </View>
-
-                <View style={styles.Container}>
-                    <Text style={styles.TextLabel}>ที่อยู่ ตามบัตรประชาชน</Text>
-                    <View style={styles.ContainerTextInput}>
-                        <Text style={styles.TextInput}>{!state.profile_data ? null : state.profile_data.address}</Text>
-                    </View>
-                </View>
-
-                <View style={styles.Container}>
-                    <Text style={styles.TextLabel}>เบอร์โทร ที่สามารถติดต่อได้</Text>
-                    <View style={styles.ContainerTextInput}>
-                        <Text style={styles.TextInput}>{!state.profile_data ? null : state.profile_data.phone}</Text>
-                    </View>
-                </View>
-
-                <View style={{ marginBottom: 30 }} />
-
-                <View style={{ alignItems: 'center' }}>
-                    <View style={styles.DescriptionTextInput}>
-                        <TextInput
-                            style={styles.TextInput}
-                            placeholder={'ข้อมูลเพิ่มเติม'}
-                            // keyboardType="numeric"
-                            underlineColorAndroid="transparent"
-                            onChangeText={e => handleChange(e, 'description')}
-                        />
                     </View>
 
-                    {state.description != null ?
+                    <View style={{ marginBottom: 30 }} />
+
+                    <View style={{ alignItems: 'center' }}>
+                        <View style={styles.DescriptionTextInput}>
+                            <TextInput
+                                style={styles.TextInput}
+                                placeholder={'ข้อมูลเพิ่มเติม'}
+                                // keyboardType="numeric"
+                                underlineColorAndroid="transparent"
+                                onChangeText={e => this.handleChange(e, 'description')}
+                            />
+                        </View>
+
                         <TouchableOpacity
                             style={styles.buttonDescription}
-                            disabled={true}>
+                            disabled={this.state.hide_box}
+                            onPress={() => { upload_description() }}
+                        >
+
                             <Text styles={styles.buttonText}>
                                 {'บันทึก'}
                             </Text>
                         </TouchableOpacity>
-                        :
-                        null
-                    }
 
-                </View>
+
+                    </View>
 
 
 
-            </View >
-        </KeyboardAwareScrollView >
-    );
+                </View >
+            </KeyboardAwareScrollView >
+        );
+    }
+
+
 }
 
 const styles = StyleSheet.create({

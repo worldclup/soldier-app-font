@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { Component } from 'react';
 import {
   View,
   ImageBackground,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+
+// import { useNavigation } from '@react-navigation/native';
+// import { render } from 'react-dom';
 
 var jwt_decode = require('jwt-decode');
 
-SplazScreen = () => {
+class SplazScreen extends Component {
 
-  const navigation = useNavigation();
-
-  useEffect(() => {
+  componentDidMount() {
     setTimeout(() => {
       AsyncStorage.getItem('user_token').then(user_token => {
         let decode = user_token ? jwt_decode(user_token) : null
@@ -22,26 +22,28 @@ SplazScreen = () => {
             // navigation.navigate('Admin')
           }
           else if (decode.type == 1) {
-            navigation.navigate('Drawer_page', { screen: 'Drawer_page' })
+            this.props.navigation.navigate('Drawer_page', { screen: 'Drawer_page' })
           }
         }
         else {
-          navigation.navigate('Account', { screen: 'Login' });
+          this.props.navigation.navigate('Account', { screen: 'Login' });
         }
 
       })
     }, 2000);
-  })
+  }
 
-  return (
-    <View>
-      <ImageBackground
-        style={{ width: 415, height: 660 }}
-        source={require('../image/BackGround.jpg')}
-      />
+  render() {
+    return (
+      <View>
+        <ImageBackground
+          style={{ width: 415, height: 660 }}
+          source={require('../image/BackGround.jpg')}
+        />
+      </View >
+    );
+  }
 
-    </View>
-  );
 }
 
 export default SplazScreen;

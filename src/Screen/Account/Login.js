@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { Component } from 'react';
+
 import {
     View,
     ImageBackground,
@@ -16,34 +17,28 @@ import { useNavigation } from '@react-navigation/native';
 
 var jwt_decode = require('jwt-decode');
 
-const Login = () => {
+class Login extends Component {
 
-    const navigation = useNavigation();
-
-    const [state, initState] = React.useState({
-        username: null,
-        password: null,
-        showPassword: true,
-    })
-
-    const setState = (value) => {
-        initState({
-            ...state,
-            ...value
-        })
+    constructor() {
+        super();
+        this.state = {
+            username: null,
+            password: false,
+            showPassword: null,
+        };
     }
 
-    const handleChange = (e, name) => {
-        setState({
+    handleChange = (e, name) => {
+        this.setState({
             [name]: e,
         });
     }
 
-    const userLogin = async () => {
+    userLogin = async () => {
 
         let body = {
-            username: state.username,
-            password: state.password
+            username: this.state.username,
+            password: this.state.password
         }
 
         // console.log("body : ", body)
@@ -59,7 +54,7 @@ const Login = () => {
                         console.log("go to Admin")
                     }
                     if (decode.type == 1) {
-                        navigation.navigate('Drawer_page', { screen: 'Drawer_page' })
+                        this.props.navigation.navigate('Drawer_page', { screen: 'Drawer_page' })
                     }
 
                 } else {
@@ -71,81 +66,85 @@ const Login = () => {
         }
     }
 
-    return (
-        <KeyboardAwareScrollView>
-            <View style={styles.Viewcontainer}>
-                {/* <ImageBackground
-                style={{ width: 415, height: 660, flex: 1, justifyContent: 'center', }}
-                source={require('../../image/BackGround_white.jpg')}
-            /> */}
+    render() {
+        return (
+            <KeyboardAwareScrollView>
+                <View style={styles.Viewcontainer}>
+                    {/* <ImageBackground
+                    style={{ width: 415, height: 660, flex: 1, justifyContent: 'center', }}
+                    source={require('../../image/BackGround_white.jpg')}
+                /> */}
 
 
-                <View style={styles.Container}>
+                    <View style={styles.Container}>
 
-                    <View style={{ marginTop: 150 }} />
-                    <Text style={styles.TextLabeluser}>รหัสผู้ใช้งาน</Text>
-                    <View style={styles.ContainerTextInput}>
-                        <TextInput
-                            style={styles.TextInput}
-                            placeholderTextColor="#A6A6A6"
-                            placeholder={'รหัสประจำตัวทหาร 10 หลัก'}
-                            selectionColor="white"
-                            color="black"
-                            maxLength={10}
-                            underlineColorAndroid="transparent"
-                            id="username"
-                            onChangeText={e => handleChange(e, 'username')}
+                        <View style={{ marginTop: 150 }} />
+                        <Text style={styles.TextLabeluser}>รหัสผู้ใช้งาน</Text>
+                        <View style={styles.ContainerTextInput}>
+                            <TextInput
+                                style={styles.TextInput}
+                                placeholderTextColor="#A6A6A6"
+                                placeholder={'รหัสประจำตัวทหาร 10 หลัก'}
+                                selectionColor="white"
+                                color="black"
+                                maxLength={10}
+                                underlineColorAndroid="transparent"
+                                id="username"
+                                onChangeText={e => this.handleChange(e, 'username')}
+                            />
+                        </View>
+
+                        <View style={{ marginBottom: 10 }} />
+                        <Text style={styles.TextLabelpass}>รหัสผ่าน</Text>
+                        <View style={styles.ContainerTextInput}>
+                            <TextInput
+                                style={styles.TextInput}
+                                secureTextEntry={this.state.showPassword}
+                                placeholderTextColor="#A6A6A6"
+                                keyboardType="numeric"
+                                placeholder={'รหัสผ่าน'}
+                                selectionColor="white"
+                                color="black"
+                                maxLength={20}
+                                underlineColorAndroid="transparent"
+                                id="password"
+                                onChangeText={e => this.handleChange(e, 'password')}
+                            />
+                        </View>
+
+                        <TouchableOpacity
+                            onPress={() => { this.userLogin() }}
+                            style={styles.buttonLogin}>
+                            <Text styles={styles.buttonText}>
+                                {"เข้าสู่ระบบ"}
+                            </Text>
+                        </TouchableOpacity>
+
+                        <View
+                            style={{
+                                backgroundColor: 'white',
+                                width: 300,
+                                height: 3,
+                                borderRadius: 1,
+                                margin: 30,
+                            }}
                         />
+
+                        {/* <TouchableOpacity
+                            onPress={() => { navigation.navigate('Register') }}
+                            style={styles.buttonRegister}>
+                            <Text styles={styles.buttonText}>
+                                {"สมัครสมาชิก"}
+                            </Text>
+                        </TouchableOpacity> */}
                     </View>
 
-                    <View style={{ marginBottom: 10 }} />
-                    <Text style={styles.TextLabelpass}>รหัสผ่าน</Text>
-                    <View style={styles.ContainerTextInput}>
-                        <TextInput
-                            style={styles.TextInput}
-                            secureTextEntry={state.showPassword}
-                            placeholderTextColor="#A6A6A6"
-                            keyboardType="numeric"
-                            placeholder={'รหัสผ่าน'}
-                            selectionColor="white"
-                            color="black"
-                            maxLength={20}
-                            underlineColorAndroid="transparent"
-                            id="password"
-                            onChangeText={e => handleChange(e, 'password')}
-                        />
-                    </View>
-
-                    <TouchableOpacity
-                        onPress={() => { userLogin() }}
-                        style={styles.buttonLogin}>
-                        <Text styles={styles.buttonText}>
-                            {"เข้าสู่ระบบ"}
-                        </Text>
-                    </TouchableOpacity>
-
-                    <View
-                        style={{
-                            backgroundColor: 'white',
-                            width: 300,
-                            height: 3,
-                            borderRadius: 1,
-                            margin: 30,
-                        }}
-                    />
-
-                    <TouchableOpacity
-                        onPress={() => { navigation.navigate('Register') }}
-                        style={styles.buttonRegister}>
-                        <Text styles={styles.buttonText}>
-                            {"สมัครสมาชิก"}
-                        </Text>
-                    </TouchableOpacity>
                 </View>
+            </KeyboardAwareScrollView >
+        );
+    }
 
-            </View>
-        </KeyboardAwareScrollView>
-    );
+
 }
 
 const styles = StyleSheet.create({

@@ -27,7 +27,7 @@ const Account = () => {
         <Stack.Navigator>
             <Stack.Screen options={{ headerShown: false }} name="LoginScreen" component={Login} />
             <Stack.Screen options={{ headerShown: true }} name="Register" component={Register} />
-            <Stack.Screen options={{ headerTitle: '', headerShown: true }} name="PDF" component={pdf_view} />
+            <Stack.Screen options={{ headerTitle: '', headerShown: false }} name="PDF" component={pdf_view} />
         </Stack.Navigator>
     )
 }
