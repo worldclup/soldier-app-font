@@ -81,11 +81,21 @@ class Profile extends Component {
         let body = {
             user_id: this.state.profile_data.user_id,
             username: this.state.profile_data.username,
-            time: moment().format('DD-MM-YYYY HH:mm'),
             description: this.state.description
         }
 
-        console.log("body : ", body)
+        try {
+            await post(body, 'api/v1/user/upload_description_user', null).then(res => {
+                if (res.success) {
+                    alert("อัปโหลด ข้อมูลเพิ่มเติม เสร็จเรียบร้อย")
+                } else {
+                    alert(res.error_message);
+                }
+            })
+
+        } catch (error) {
+            alert(error);
+        }
     }
 
     upload_file_pdf = async () => {
@@ -209,7 +219,7 @@ class Profile extends Component {
                         <TouchableOpacity
                             style={styles.buttonDescription}
                             disabled={this.state.hide_box}
-                            onPress={() => { upload_description() }}
+                            onPress={() => { this.upload_description() }}
                         >
 
                             <Text styles={styles.buttonText}>

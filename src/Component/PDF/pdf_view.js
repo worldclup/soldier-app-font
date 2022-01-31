@@ -10,25 +10,17 @@ import Pdf from 'react-native-pdf';
 
 class pdf_view extends Component {
 
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         setState({
-    //             source: this.props.route.params.data.base64
-    //         })
-    //     }, 2000);
-    // }, [])
-
-    componentDidMount(props) {
-        this.setState({
-            source: this.props.route.params.data.base64
-        })
-    }
-
     constructor(props) {
         super();
         this.state = {
             source: null,
         }
+    }
+
+    componentDidMount(props) {
+        this.setState({
+            source: this.props.route.params.data.base64
+        })
     }
 
     render() {
