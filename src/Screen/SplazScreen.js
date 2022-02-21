@@ -19,7 +19,7 @@ class SplazScreen extends Component {
 
         if (decode != null) {
           if (decode.type == 0) {
-            // navigation.navigate('Admin')
+            this.props.navigation.navigate('Drawer_admin', { screen: 'Drawer_admin' })
           }
           else if (decode.type == 1) {
             this.props.navigation.navigate('Drawer_page', { screen: 'Drawer_page' })

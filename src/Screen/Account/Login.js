@@ -51,9 +51,9 @@ class Login extends Component {
                     // console.log("decode : ", decode)
 
                     if (decode.type == 0) {
-                        console.log("go to Admin")
+                        this.props.navigation.navigate('Drawer_admin', { screen: 'Drawer_admin' })
                     }
-                    if (decode.type == 1) {
+                    else if (decode.type == 1) {
                         this.props.navigation.navigate('Drawer_page', { screen: 'Drawer_page' })
                     }
 

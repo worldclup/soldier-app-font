@@ -1,4 +1,6 @@
 export const ip = "http://192.168.2.10:3080/"
+// export const ip = "http://172.20.10.2:3080/"
+
 
 var jwt_decode = require('jwt-decode');
 

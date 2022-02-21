@@ -9,19 +9,10 @@ import {
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import DocumentPicker from 'react-native-document-picker';
-import Pdf from 'react-native-pdf';
-import base64 from 'react-native-base64';
-import RNFetchBlob from 'rn-fetch-blob';
-
-import RNFS from 'react-native-fs';
-
 import { get, post } from '../../service/service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import moment from 'moment';
-
-class Profile extends Component {
+class Profileadmin extends Component {
 
     constructor() {
         super();
@@ -64,7 +55,9 @@ class Profile extends Component {
                         this.setState({
                             profile_data: res.result,
                             pdf_data: res.result.pdf_text
-                        })
+                        }
+                            , () => { console.log("1") }
+                        )
 
                     } else {
                         alert('get_user', res.error_message);
@@ -98,86 +91,6 @@ class Profile extends Component {
         }
     }
 
-    upload_file_pdf = async () => {
-        try {
-            const res = await DocumentPicker.pick({
-                type: [DocumentPicker.types.allFiles],
-            })
-
-            const fileName = res[0].uri.replace("file://", "")
-            let database64 = ''
-            let data = ''
-
-            RNFetchBlob.fs.readStream(
-                fileName,
-                'base64',
-                4095)
-                .then((ifstream) => {
-                    ifstream.open()
-                    ifstream.onData((data) => {
-
-                        database64 = database64 + data
-                        // console.log("database64 : ", database64)
-
-                        let base64 = `data:${res[0].type};base64,` + database64
-
-                        const param = {
-                            base64: base64,
-                            name: res[0].name,
-                            type: res[0].type,
-                            size: res[0].size,
-                            fileName: res[0].name
-                        }
-
-                        this.setState({
-                            pdf_data: param,
-                            hide_box: true,
-                        })
-
-                    })
-                    ifstream.onError((err) => {
-                        console.log('oops', err)
-                    })
-
-                })
-
-
-        } catch (err) {
-            if (DocumentPicker.isCancel(err)) {
-            } else {
-                throw err
-            }
-        }
-    }
-
-    upload_database = async () => {
-
-        let body = {
-            user_id: this.state.profile_data.user_id,
-            pdf_data: this.state.pdf_data
-        }
-
-        try {
-
-            await post(body, 'api/v1/user/upload_userpdf', null).then(res => {
-                if (res.success) {
-                    alert("อัปโหลด PDF เสร็จเรียบร้อย")
-
-                    get_user()
-                    this.setState({
-                        hide_box: false
-                    })
-                } else {
-                    alert(res.error_message);
-                }
-            })
-
-        } catch (error) {
-            alert(error);
-        }
-
-    }
-
     disabled_pdf = () => {
         let obj = this.state.pdf_data
         // console.log(obj)
@@ -206,7 +119,6 @@ class Profile extends Component {
                             onPress={() => { this.props.navigation.navigate('Pdf_component', { screen: 'PDF', params: { data: this.state.profile_data.pdf_text } }) }}
                             style={styles.buttonRegister}
                             disabled={this.disabled_pdf()}
-
                         >
                             <Text styles={styles.buttonText}>
                                 {"ตรวจสอบข้อมูล PDX"}
@@ -334,4 +246,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Profile;
+export default Profileadmin;

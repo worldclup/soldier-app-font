@@ -1,5 +1,7 @@
 package com.soldierappfont;
 
+import com.oblador.vectoricons.VectorIconsPackage;
+
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.rnfs.RNFSPackage;
 

@@ -26,14 +26,14 @@ class pdf_view extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     style={styles.buttonDescription}
                     onPress={() => { this.props.navigation.navigate('Drawer_page', { screen: 'Profile' }); }}
                 >
                     <Text styles={styles.buttonText}>
                         {'กลับ'}
                     </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <View style={{ marginBottom: 20 }} />
 

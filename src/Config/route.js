@@ -19,6 +19,11 @@ import Logout_app from '../Screen/Account/Logout';
 
 import pdf_view from '../Component/PDF/pdf_view';
 
+import Mainadmin from '../Screen/Admin/Mainadmin';
+import Profileadmin from '../Screen/Admin/Profileadmin';
+import destable from '../Screen/Admin/destable';
+import usertable from '../Screen/Admin/usertable';
+
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -27,7 +32,14 @@ const Account = () => {
         <Stack.Navigator>
             <Stack.Screen options={{ headerShown: false }} name="LoginScreen" component={Login} />
             <Stack.Screen options={{ headerShown: true }} name="Register" component={Register} />
-            <Stack.Screen options={{ headerTitle: '', headerShown: false }} name="PDF" component={pdf_view} />
+        </Stack.Navigator>
+    )
+}
+
+const Pdf_component = () => {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen options={{ headerTitle: '', headerShown: true }} name="PDF" component={pdf_view} />
         </Stack.Navigator>
     )
 }
@@ -42,6 +54,17 @@ const Drawer_page = () => {
     )
 }
 
+const Drawer_admin = () => {
+    return (
+        <Drawer.Navigator>
+            <Drawer.Screen options={{ headerTitle: '', headerShown: true }} name="หน้าหลัก" component={Mainadmin} />
+            <Drawer.Screen options={{ headerTitle: '', headerShown: true }} name="ข้อมูลส่วนตัว" component={Profileadmin} />
+            <Drawer.Screen options={{ headerTitle: '', headerShown: true }} name="ข้อมูลกำลังพล" component={usertable} />
+            <Drawer.Screen options={{ headerShown: false }} name="ออกจากระบบ" component={Logout_app} />
+        </Drawer.Navigator>
+    )
+}
+
 export default function AppRoute() {
     return (
         <NavigationContainer>
@@ -49,6 +72,8 @@ export default function AppRoute() {
                 <Stack.Screen options={{ headerShown: false }} name="SplazScreen" component={SplazScreen} />
                 <Stack.Screen options={{ headerShown: false }} name="Account" component={Account} />
                 <Stack.Screen options={{ headerShown: false }} name="Drawer_page" component={Drawer_page} />
+                <Stack.Screen options={{ headerShown: false }} name="Drawer_admin" component={Drawer_admin} />
+                <Stack.Screen options={{ headerShown: false }} name="Pdf_component" component={Pdf_component} />
             </Stack.Navigator>
         </NavigationContainer>
     );
