@@ -8,11 +8,16 @@ import {
     TouchableOpacity,
     ScrollView,
 } from 'react-native';
+import { NativeBaseProvider, VStack, Box, Divider } from 'native-base';
+
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DataTable } from 'react-native-paper';
 
 import { get, post } from '../../service/service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
+// const myIcon = <Icon name="rocket" size={30} color="#900" />;
 
 class usertable extends Component {
 
@@ -55,6 +60,17 @@ class usertable extends Component {
         })
     }
 
+    disabled_pdf = (event) => {
+        let obj = event
+        // console.log(obj)
+        if (obj == null) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     render() {
         return (
             <KeyboardAwareScrollView>
@@ -67,9 +83,61 @@ class usertable extends Component {
 
                         <View style={{ marginBottom: 20 }} />
 
-                        <DataTable >
+                        <View style={{ marginBottom: 20 }} />
 
-                            {/* <ScrollView style={styles.dataWrapper}> */}
+                        {!this.state.all_user_info ?
+                            null
+                            :
+                            <>
+                                {this.state.all_user_info.map((ele, index) => {
+                                    return (
+                                        <NativeBaseProvider>
+                                            <Box border="1" borderRadius="md">
+                                                <Box px="4" pt="4">
+                                                    <Text>ลำดับที่ {index + 1}</Text>
+                                                </Box>
+                                                <Box px="4">
+                                                    <Text>รหัสประจำตัวทหาร : {ele.username}</Text>
+                                                </Box>
+                                                <Box px="4" pb="4">
+                                                    <Icon.Button
+                                                        name="file-pdf-o"
+                                                        backgroundColor="#3b5998"
+                                                        onPress={() => { console.log(index + 1) }}
+                                                        disabled={this.disabled_pdf(ele.pdf_text)}
+                                                    >
+                                                        <Text style={{ fontSize: 13 }}>
+                                                            PDX
+                                                        </Text>
+                                                    </Icon.Button>
+                                                </Box>
+                                            </Box>
+                                        </NativeBaseProvider>
+
+                                    );
+
+                                })}
+                            </>
+                        }
+
+                        {/* <NativeBaseProvider>
+                            <Box border="1" borderRadius="md">
+                                <VStack space="4" divider={<Divider />}>
+                                <Box px="4" pt="4">
+                                    ลำดับที่
+                                </Box>
+                                <Box px="4">
+                                    รหัสประจำตัวทหาร
+                                </Box>
+                                <Box px="4" pb="4">
+                                    GeekyAnts
+                                </Box>
+                                </VStack>
+                            </Box>
+                        </NativeBaseProvider> */}
+
+                        {/* <DataTable >
+
                             <DataTable.Header style={{ borderColor: 'green', borderWidth: 3, width: 390 }}>
                                 <DataTable.Title style={{ width: 5 }}>ลำดับ</DataTable.Title>
                                 <DataTable.Title>รหัสประจำตัวทหาร</DataTable.Title>
@@ -77,7 +145,6 @@ class usertable extends Component {
                             </DataTable.Header>
 
 
-                            {/* </ScrollView> */}
                             {!this.state.all_user_info ?
                                 null
                                 :
@@ -86,9 +153,9 @@ class usertable extends Component {
                                         return (
                                             <DataTable.Row style={{ borderWidth: 1, width: 390 }}>
                                                 <DataTable.Cell style={{ width: 5 }}>
-                                                    {/* <Text> */}
+                                                    <Text>
                                                     {index + 1}
-                                                    {/* </Text> */}
+                                                    </Text>
                                                 </DataTable.Cell>
                                                 <DataTable.Cell>
                                                     <Text>{ele.username}</Text>
@@ -100,7 +167,7 @@ class usertable extends Component {
                                 </>
                             }
 
-                        </DataTable>
+                        </DataTable> */}
                         <View style={{ marginBottom: 20 }} />
 
                     </View>

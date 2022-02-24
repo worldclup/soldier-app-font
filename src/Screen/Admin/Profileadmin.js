@@ -56,7 +56,7 @@ class Profileadmin extends Component {
                             profile_data: res.result,
                             pdf_data: res.result.pdf_text
                         }
-                            , () => { console.log("1") }
+                            // , () => { console.log("1") }
                         )
 
                     } else {
