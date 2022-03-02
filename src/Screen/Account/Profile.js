@@ -191,61 +191,80 @@ class Profile extends Component {
 
     render() {
         return (
-            <KeyboardAwareScrollView>
-                <View>
+            <ImageBackground
+                style={{
+                    flex: 1,
+                    // resizeMode: 'contain'r
+                    width: "100%",
+                    height: "100%"
+                }}
+                source={require('../../image/BackGround_white.jpg')}
+            >
+                <KeyboardAwareScrollView>
+                    <View>
 
-                    <View style={{ marginBottom: 20 }} />
+                        <View style={{ marginBottom: 20 }} />
 
-                    <View style={styles.ContainerHeader}>
-                        <Text style={styles.TextLabelHeader}>ข้อมูลส่วนตัว</Text>
-                    </View>
-
-                    <View style={{ alignItems: 'center' }}>
-
-                        <TouchableOpacity
-                            onPress={() => { this.props.navigation.navigate('Pdf_component', { screen: 'PDF', params: { data: this.state.profile_data.pdf_text } }) }}
-                            style={styles.buttonRegister}
-                            disabled={this.disabled_pdf()}
-
-                        >
-                            <Text styles={styles.buttonText}>
-                                {"ตรวจสอบข้อมูล PDX"}
-                            </Text>
-                        </TouchableOpacity>
-
-                    </View>
-
-                    <View style={{ marginBottom: 30 }} />
-
-                    <View style={{ alignItems: 'center' }}>
-                        <View style={styles.DescriptionTextInput}>
-                            <TextInput
-                                style={styles.TextInput}
-                                placeholder={'ข้อมูลเพิ่มเติม'}
-                                // keyboardType="numeric"
-                                underlineColorAndroid="transparent"
-                                onChangeText={e => this.handleChange(e, 'description')}
-                            />
+                        <View style={styles.ContainerHeader}>
+                            <Text style={styles.TextLabelHeader}>ข้อมูลส่วนตัว</Text>
                         </View>
 
-                        <TouchableOpacity
-                            style={styles.buttonDescription}
-                            disabled={this.state.hide_box}
-                            onPress={() => { this.upload_description() }}
-                        >
+                        <View style={{ alignItems: 'center' }}>
 
-                            <Text styles={styles.buttonText}>
-                                {'บันทึก'}
-                            </Text>
-                        </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => { this.props.navigation.navigate('Pdf_component', { screen: 'PDF', params: { data: this.state.profile_data.pdf_text } }) }}
+                                style={styles.buttonRegister}
+                                disabled={this.disabled_pdf()}
 
+                            >
+                                <Text styles={styles.buttonText}>
+                                    {"ตรวจสอบข้อมูล PDX"}
+                                </Text>
+                            </TouchableOpacity>
 
-                    </View>
+                        </View>
 
+                        <View style={{ marginBottom: 40 }} />
+                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            <View
+                                style={{
+                                    backgroundColor: 'white',
+                                    width: '80%',
+                                    height: 3,
+                                    borderRadius: 1,
+                                    // margin: 30,
+                                }}
+                            />
+                        </View>
+                        <View style={{ marginBottom: 20 }} />
 
+                        <View style={{ alignItems: 'center' }}>
+                            <View style={styles.DescriptionTextInput}>
+                                <TextInput
+                                    style={styles.TextInput}
+                                    placeholder={'ข้อมูลเพิ่มเติม'}
+                                    // keyboardType="numeric"
+                                    underlineColorAndroid="transparent"
+                                    onChangeText={e => this.handleChange(e, 'description')}
+                                />
+                            </View>
 
-                </View >
-            </KeyboardAwareScrollView >
+                            <TouchableOpacity
+                                style={styles.buttonDescription}
+                                disabled={this.state.hide_box}
+                                onPress={() => { this.upload_description() }}
+                            >
+
+                                <Text styles={styles.buttonText}>
+                                    {'บันทึก'}
+                                </Text>
+                            </TouchableOpacity>
+
+                        </View>
+
+                    </View >
+                </KeyboardAwareScrollView >
+            </ImageBackground>
         );
     }
 
@@ -300,8 +319,8 @@ const styles = StyleSheet.create({
         width: 300,
     },
     buttonRegister: {
-        width: '100%',
-        width: 300,
+        width: '50%',
+        // width: 300,
         height: 40,
         borderRadius: 10,
         backgroundColor: "#00FF00",
@@ -310,14 +329,14 @@ const styles = StyleSheet.create({
         marginTop: 50,
     },
     buttonDescription: {
-        width: '100%',
-        width: 300,
+        width: '30%',
+        // width: 300,
         height: 40,
         borderRadius: 10,
         backgroundColor: "#00FF00",
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 50,
+        marginTop: 30,
     },
     TextLabel: {
         // right: 100,

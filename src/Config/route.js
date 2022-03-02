@@ -19,10 +19,9 @@ import Logout_app from '../Screen/Account/Logout';
 
 import pdf_view from '../Component/PDF/pdf_view';
 
-import Mainadmin from '../Screen/Admin/Mainadmin';
 import Profileadmin from '../Screen/Admin/Profileadmin';
 import destable from '../Screen/Admin/destable';
-import usertable from '../Screen/Admin/usertable';
+import userlist from '../Screen/Admin/userlist';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -57,9 +56,11 @@ const Drawer_page = () => {
 const Drawer_admin = () => {
     return (
         <Drawer.Navigator>
-            <Drawer.Screen options={{ headerTitle: '', headerShown: true }} name="หน้าหลัก" component={Mainadmin} />
-            <Drawer.Screen options={{ headerTitle: '', headerShown: true }} name="ข้อมูลส่วนตัว" component={Profileadmin} />
-            <Drawer.Screen options={{ headerTitle: '', headerShown: true }} name="ข้อมูลกำลังพล" component={usertable} />
+            {/* <Drawer.Screen options={{ headerTitle: '', headerShown: true }} name="หน้าหลัก" component={Mainadmin} /> */}
+            <Drawer.Screen options={{ headerTitle: '', headerShown: true }} name="หน้าหลัก" component={Main} />
+            <Drawer.Screen options={{ headerTitle: '', headerShown: true }} name="ข้อมูลส่วนตัว" component={Profile} />
+            <Drawer.Screen options={{ headerTitle: '', headerShown: true }} name="ข้อมูลกำลังพล" component={userlist} />
+            <Drawer.Screen options={{ headerTitle: '', headerShown: true }} name="กำลังพลส่งข้อมูลเพิ่มเติม" component={destable} />
             <Drawer.Screen options={{ headerShown: false }} name="ออกจากระบบ" component={Logout_app} />
         </Drawer.Navigator>
     )

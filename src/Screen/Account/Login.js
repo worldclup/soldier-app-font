@@ -68,79 +68,89 @@ class Login extends Component {
 
     render() {
         return (
-            <KeyboardAwareScrollView>
-                <View style={styles.Viewcontainer}>
-                    {/* <ImageBackground
+            <ImageBackground
+                style={{
+                    flex: 1,
+                    // resizeMode: 'contain'r
+                    width: "100%",
+                    height: "100%"
+                }}
+                source={require('../../image/BackGround_white.jpg')}
+            >
+                <KeyboardAwareScrollView>
+                    <View style={styles.Viewcontainer}>
+                        {/* <ImageBackground
                     style={{ width: 415, height: 660, flex: 1, justifyContent: 'center', }}
                     source={require('../../image/BackGround_white.jpg')}
                 /> */}
 
 
-                    <View style={styles.Container}>
+                        <View style={styles.Container}>
 
-                        <View style={{ marginTop: 150 }} />
-                        <Text style={styles.TextLabeluser}>รหัสผู้ใช้งาน</Text>
-                        <View style={styles.ContainerTextInput}>
-                            <TextInput
-                                style={styles.TextInput}
-                                placeholderTextColor="#A6A6A6"
-                                placeholder={'รหัสประจำตัวทหาร 10 หลัก'}
-                                selectionColor="white"
-                                color="black"
-                                maxLength={10}
-                                underlineColorAndroid="transparent"
-                                id="username"
-                                onChangeText={e => this.handleChange(e, 'username')}
+                            <View style={{ marginTop: 150 }} />
+                            <Text style={styles.TextLabeluser}>รหัสผู้ใช้งาน</Text>
+                            <View style={styles.ContainerTextInput}>
+                                <TextInput
+                                    style={styles.TextInput}
+                                    placeholderTextColor="#A6A6A6"
+                                    placeholder={'รหัสประจำตัวทหาร 10 หลัก'}
+                                    selectionColor="white"
+                                    color="black"
+                                    maxLength={10}
+                                    underlineColorAndroid="transparent"
+                                    id="username"
+                                    onChangeText={e => this.handleChange(e, 'username')}
+                                />
+                            </View>
+
+                            <View style={{ marginBottom: 10 }} />
+                            <Text style={styles.TextLabelpass}>รหัสผ่าน</Text>
+                            <View style={styles.ContainerTextInput}>
+                                <TextInput
+                                    style={styles.TextInput}
+                                    secureTextEntry={this.state.showPassword}
+                                    placeholderTextColor="#A6A6A6"
+                                    keyboardType="numeric"
+                                    placeholder={'รหัสผ่าน'}
+                                    selectionColor="white"
+                                    color="black"
+                                    maxLength={20}
+                                    underlineColorAndroid="transparent"
+                                    id="password"
+                                    onChangeText={e => this.handleChange(e, 'password')}
+                                />
+                            </View>
+
+                            <TouchableOpacity
+                                onPress={() => { this.userLogin() }}
+                                style={styles.buttonLogin}>
+                                <Text styles={styles.buttonText}>
+                                    {"เข้าสู่ระบบ"}
+                                </Text>
+                            </TouchableOpacity>
+
+                            <View
+                                style={{
+                                    backgroundColor: 'white',
+                                    width: 300,
+                                    height: 3,
+                                    borderRadius: 1,
+                                    margin: 30,
+                                }}
                             />
-                        </View>
 
-                        <View style={{ marginBottom: 10 }} />
-                        <Text style={styles.TextLabelpass}>รหัสผ่าน</Text>
-                        <View style={styles.ContainerTextInput}>
-                            <TextInput
-                                style={styles.TextInput}
-                                secureTextEntry={this.state.showPassword}
-                                placeholderTextColor="#A6A6A6"
-                                keyboardType="numeric"
-                                placeholder={'รหัสผ่าน'}
-                                selectionColor="white"
-                                color="black"
-                                maxLength={20}
-                                underlineColorAndroid="transparent"
-                                id="password"
-                                onChangeText={e => this.handleChange(e, 'password')}
-                            />
-                        </View>
-
-                        <TouchableOpacity
-                            onPress={() => { this.userLogin() }}
-                            style={styles.buttonLogin}>
-                            <Text styles={styles.buttonText}>
-                                {"เข้าสู่ระบบ"}
-                            </Text>
-                        </TouchableOpacity>
-
-                        <View
-                            style={{
-                                backgroundColor: 'white',
-                                width: 300,
-                                height: 3,
-                                borderRadius: 1,
-                                margin: 30,
-                            }}
-                        />
-
-                        {/* <TouchableOpacity
+                            {/* <TouchableOpacity
                             onPress={() => { navigation.navigate('Register') }}
                             style={styles.buttonRegister}>
                             <Text styles={styles.buttonText}>
                                 {"สมัครสมาชิก"}
                             </Text>
                         </TouchableOpacity> */}
-                    </View>
+                        </View>
 
-                </View>
-            </KeyboardAwareScrollView >
+                    </View>
+                </KeyboardAwareScrollView>
+            </ImageBackground>
         );
     }
 

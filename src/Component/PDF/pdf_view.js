@@ -18,6 +18,7 @@ class pdf_view extends Component {
     }
 
     componentDidMount(props) {
+        // console.log(this.props.route.params.data.base64)
         this.setState({
             source: this.props.route.params.data.base64
         })

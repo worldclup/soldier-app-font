@@ -37,8 +37,8 @@ class SplazScreen extends Component {
     return (
       <View>
         <ImageBackground
-          style={{ width: 415, height: 660 }}
-          source={require('../image/BackGround.jpg')}
+          style={{ width: 300, height: 300, marginTop: '55%', marginLeft: '17%' }}
+          source={require('../image/reg17.png')}
         />
       </View >
     );
