@@ -26,11 +26,11 @@ class Main extends Component {
         this.state = {
             user_data: null,
             images: [
-                require('../../image/info1.jpg'),
-                require('../../image/info2.jpg'),
-                require('../../image/info3.jpg'),
-                require('../../image/info4.jpg'),
-                require('../../image/info5.jpg'),
+                require('../../image/info/info1.jpg'),
+                require('../../image/info/info2.jpg'),
+                require('../../image/info/info3.jpg'),
+                require('../../image/info/info4.jpg'),
+                require('../../image/info/info5.jpg'),
             ]
         }
     }
@@ -108,12 +108,23 @@ class Main extends Component {
                         </View>
                         <View style={{ marginBottom: 20 }} />
 
+                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={{
+                                fontSize: 15,
+                                fontWeight: 'bold',
+                                color: 'blue'
+                            }}> *** รูป Infographic ประจำวัน *** </Text>
+                        </View>
+
+                        <View style={{ marginBottom: 20 }} />
+
                         <SliderBox
                             images={this.state.images}
                             sliderBoxHeight={300}
                             dotColor="#FFEE58"
                             inactiveDotColor="#90A4AE"
                             paginationBoxVerticalPadding={20}
+                            width={50}
                             autoplay
                             circleLoop
                             resizeMethod={'resize'}
@@ -136,9 +147,10 @@ class Main extends Component {
                                 margin: 0,
                                 backgroundColor: "rgba(128, 128, 128, 0.92)"
                             }}
-                            ImageComponentStyle={{ borderRadius: 15, width: '97%', marginTop: 5 }}
+                            ImageComponentStyle={{ borderRadius: 15, width: '90%', marginTop: 5 }}
                             imageLoadingColor="#2196F3"
                         />
+
                         <View style={{ marginBottom: 40 }} />
                     </View>
                 </KeyboardAwareScrollView >
