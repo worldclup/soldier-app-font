@@ -4,16 +4,23 @@ import {
     View,
     ImageBackground,
     StyleSheet,
-    TextInput,
+    // TextInput,
     Text,
     TouchableOpacity,
+    ScrollView,
+    Dimensions,
+    Image,
+    Button
 } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+import { TextInput } from 'react-native-paper';
 
 import { get, post } from '../../service/service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useNavigation } from '@react-navigation/native';
+import { Icon } from 'native-base';
+// import { Item } from 'react-native-paper/lib/typescript/components/List/List';
 
 var jwt_decode = require('jwt-decode');
 
@@ -41,7 +48,6 @@ class Login extends Component {
             password: this.state.password
         }
 
-        // console.log("body : ", body)
         let decode = null
         try {
             await post(body, 'api/v1/user/user_login', null).then(res => {
@@ -62,95 +68,148 @@ class Login extends Component {
                 }
             })
         } catch (error) {
-            alert(error);
+            alert('กรุณาเชื่อมต่อ อินเตอร์เน็ตที่ ฝกพ.ร.17');
         }
     }
 
     render() {
         return (
-            <ImageBackground
-                style={{
-                    flex: 1,
-                    // resizeMode: 'contain'r
-                    width: "100%",
-                    height: "100%"
-                }}
-                source={require('../../image/BackGround_white.jpg')}
+            <ScrollView
+                style={{ flex: 1, backgroundColor: 'white' }}
+                showsVerticalScrollIndicator={false}
             >
-                <KeyboardAwareScrollView>
-                    <View style={styles.Viewcontainer}>
-                        {/* <ImageBackground
-                    style={{ width: 415, height: 660, flex: 1, justifyContent: 'center', }}
+                <ImageBackground
                     source={require('../../image/BackGround_white.jpg')}
-                /> */}
+                    style={{
+                        height: Dimensions.get('window').height / 2.5,
+                    }}
+                >
+                    <View style={styles.brandView}>
+                        <Image
+                            style={{ height: 180, width: 180 }}
+                            source={require('../../image/reg17.png')}
+                        />
+                        <Text style={{
+                            color: 'black',
+                            fontSize: 30,
+                            fontWeight: 'bold',
+                            textTransform: 'uppercase',
+                        }}>กรมทหารราบที่ ๑๗</Text>
+                        <Text style={{
+                            color: 'black',
+                            fontSize: 20,
+                            textTransform: 'uppercase'
+                        }}>ค่ายขุนเจืองธรรมิกราช</Text>
+                    </View>
+                </ImageBackground>
 
+                <View style={{
+                    flex: 1.5,
+                    backgroundColor: 'white',
+                    bottom: 20,
+                    borderTopStartRadius: 30,
+                    borderTopEndRadius: 30
+                }}>
+                    <View style={{ padding: 20 }} >
+                        <Text style={{ color: 'black', fontSize: 25 }}>ยินดีต้อนรับ</Text>
+                        <Text style={{ color: 'red', fontSize: 15 }}> * กรณีรหัสเข้าสู่ระบบไม่ได้ ติดต่อ ฝกม.ร.17 โดยด่วน </Text>
+                        <View style={{ marginTop: 50 }}>
+                            <Text>รหัสผู้ใช้งาน</Text>
+                            <TextInput
+                                style={styles.TextInput}
+                                // placeholderTextColor="#A6A6A6"
+                                label="รหัสประจำตัวทหาร 10 หลัก"
+                                // selectionColor="black"
+                                // color="black"
+                                maxLength={10}
+                                underlineColorAndroid="transparent"
+                                id="username"
+                                onChangeText={e => this.handleChange(e, 'username')}
+                            />
+                        </View>
 
-                        <View style={styles.Container}>
+                        <View style={{ marginTop: 20 }}>
+                            <Text>รหัสผ่าน</Text>
+                            <TextInput
+                                style={styles.TextInput}
+                                secureTextEntry={true}
+                                keyboardType="numeric"
+                                label='รหัสผ่าน'
+                                maxLength={6}
+                                underlineColorAndroid="transparent"
+                                id="password"
+                                onChangeText={e => this.handleChange(e, 'password')}
+                            />
+                        </View>
 
-                            <View style={{ marginTop: 150 }} />
-                            <Text style={styles.TextLabeluser}>รหัสผู้ใช้งาน</Text>
-                            <View style={styles.ContainerTextInput}>
-                                <TextInput
-                                    style={styles.TextInput}
-                                    placeholderTextColor="#A6A6A6"
-                                    placeholder={'รหัสประจำตัวทหาร 10 หลัก'}
-                                    selectionColor="white"
-                                    color="black"
-                                    maxLength={10}
-                                    underlineColorAndroid="transparent"
-                                    id="username"
-                                    onChangeText={e => this.handleChange(e, 'username')}
-                                />
-                            </View>
-
-                            <View style={{ marginBottom: 10 }} />
-                            <Text style={styles.TextLabelpass}>รหัสผ่าน</Text>
-                            <View style={styles.ContainerTextInput}>
-                                <TextInput
-                                    style={styles.TextInput}
-                                    secureTextEntry={this.state.showPassword}
-                                    placeholderTextColor="#A6A6A6"
-                                    keyboardType="numeric"
-                                    placeholder={'รหัสผ่าน'}
-                                    selectionColor="white"
-                                    color="black"
-                                    maxLength={20}
-                                    underlineColorAndroid="transparent"
-                                    id="password"
-                                    onChangeText={e => this.handleChange(e, 'password')}
-                                />
-                            </View>
-
+                        <View style={{
+                            height: 100,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
                             <TouchableOpacity
                                 onPress={() => { this.userLogin() }}
-                                style={styles.buttonLogin}>
-                                <Text styles={styles.buttonText}>
-                                    {"เข้าสู่ระบบ"}
+                                style={{
+                                    elevation: 8,
+                                    backgroundColor: "#224118",
+                                    borderRadius: 10,
+                                    paddingVertical: 10,
+                                    paddingHorizontal: 12,
+                                    width: 200
+                                }}
+                            >
+                                <Text style={{
+                                    fontSize: 18,
+                                    color: "#fff",
+                                    // fontWeight: "bold",
+                                    alignSelf: "center",
+                                    textTransform: "uppercase"
+                                }}>
+                                    เข้าสู่ระบบ
                                 </Text>
                             </TouchableOpacity>
+                        </View>
 
-                            <View
+
+                        <View style={{
+                            backgroundColor: '#1c3514',
+                            height: 3,
+                            margin: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }} />
+
+                        <View style={{
+                            height: 100,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <TouchableOpacity
+                                onPress={() => { this.props.navigation.navigate('Offline_user', { screen: 'Offline_user' }) }}
                                 style={{
-                                    backgroundColor: 'white',
-                                    width: 300,
-                                    height: 3,
-                                    borderRadius: 1,
-                                    margin: 30,
+                                    elevation: 8,
+                                    backgroundColor: "grey",
+                                    borderRadius: 10,
+                                    paddingVertical: 10,
+                                    paddingHorizontal: 12,
+                                    width: 200
                                 }}
-                            />
-
-                            {/* <TouchableOpacity
-                            onPress={() => { navigation.navigate('Register') }}
-                            style={styles.buttonRegister}>
-                            <Text styles={styles.buttonText}>
-                                {"สมัครสมาชิก"}
-                            </Text>
-                        </TouchableOpacity> */}
+                            >
+                                <Text style={{
+                                    fontSize: 18,
+                                    color: "#fff",
+                                    // fontWeight: "bold",
+                                    alignSelf: "center",
+                                    textTransform: "uppercase"
+                                }}>
+                                    เข้าสู่ระบบออฟไลน์
+                                </Text>
+                            </TouchableOpacity>
                         </View>
 
                     </View>
-                </KeyboardAwareScrollView>
-            </ImageBackground>
+                </View>
+            </ScrollView >
         );
     }
 
@@ -158,67 +217,15 @@ class Login extends Component {
 }
 
 const styles = StyleSheet.create({
-    Container: {
-        justifyContent: 'center',
-        flex: 1,
-        alignItems: 'center',
-        // marginTop: 10,
-        color: 'red',
-    },
-    ContainerTextInput: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        // alignItems: 'center',
-        backgroundColor: 'white',
-        height: 45,
-        borderRadius: 10,
-        margin: 10,
-        width: 300,
-    },
-    Viewcontainer: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-    imageTextInput: {
-        height: 30,
-        width: 30,
-    },
-    iconInput: {
-        padding: 10,
-        marginTop: 10,
-        height: 20,
-        width: 20,
-        resizeMode: 'stretch',
-        alignItems: 'center',
-        resizeMode: 'stretch',
-        left: 10,
-    },
     TextInput: {
-        height: 40,
-        marginTop: 2,
-        width: 100,
-        borderRadius: 20,
-        fontSize: 14,
-        left: 15,
-        flex: 1,
-    },
-    IconCheck: {
-        marginTop: 12,
-        right: 20,
-    },
-    TextLabeluser: {
-        right: 90,
-        color: 'black',
-        borderEndWidth: 20,
-        // fontWeight: 'bold',
-        fontSize: 15,
-    },
-    TextLabelpass: {
-        right: 100,
-        color: 'black',
-        borderEndWidth: 20,
-        // fontWeight: 'bold',
-        fontSize: 15,
+        // height: 40,
+        // marginTop: 2,
+        // width: 100,
+        // borderRadius: 20,
+        // fontSize: 14,
+        // left: 15,
+        // flex: 1,
+        backgroundColor: "white"
     },
     text: {
         fontSize: 20,
@@ -226,37 +233,16 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 20,
     },
-    imageStyle: {
-        width: 200,
-        height: 300,
-        resizeMode: 'contain',
-    },
-    buttonLogin: {
-        width: '100%',
-        width: 300,
-        height: 40,
-        borderRadius: 10,
-        backgroundColor: "#009CF2",
+    brandView: {
+        flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20,
+        alignItems: 'center'
     },
-    buttonRegister: {
-        width: '100%',
-        width: 300,
-        height: 40,
-        borderRadius: 10,
-        backgroundColor: "#00FF00",
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 10,
-    },
-    buttonText: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: "#CE26F8",
-
-
+    brandViewText: {
+        color: 'black',
+        fontSize: 30,
+        fontWeight: 'bold',
+        textTransform: 'uppercase'
     },
 });
 

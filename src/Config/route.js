@@ -56,11 +56,19 @@ const Drawer_page = () => {
 const Drawer_admin = () => {
     return (
         <Drawer.Navigator>
-            {/* <Drawer.Screen options={{ headerTitle: '', headerShown: true }} name="หน้าหลัก" component={Mainadmin} /> */}
             <Drawer.Screen options={{ headerTitle: '', headerShown: true }} name="หน้าหลัก" component={Main} />
             <Drawer.Screen options={{ headerTitle: '', headerShown: true }} name="ข้อมูลส่วนตัว" component={Profile} />
             <Drawer.Screen options={{ headerTitle: '', headerShown: true }} name="ข้อมูลกำลังพล" component={userlist} />
             <Drawer.Screen options={{ headerTitle: '', headerShown: true }} name="กำลังพลส่งข้อมูลเพิ่มเติม" component={destable} />
+            <Drawer.Screen options={{ headerShown: false }} name="ออกจากระบบ" component={Logout_app} />
+        </Drawer.Navigator>
+    )
+}
+
+const Offline_user = () => {
+    return (
+        <Drawer.Navigator>
+            <Drawer.Screen options={{ headerTitle: '', headerShown: true }} name="หน้าหลัก" component={Main} />
             <Drawer.Screen options={{ headerShown: false }} name="ออกจากระบบ" component={Logout_app} />
         </Drawer.Navigator>
     )
@@ -75,6 +83,8 @@ export default function AppRoute() {
                 <Stack.Screen options={{ headerShown: false }} name="Drawer_page" component={Drawer_page} />
                 <Stack.Screen options={{ headerShown: false }} name="Drawer_admin" component={Drawer_admin} />
                 <Stack.Screen options={{ headerShown: false }} name="Pdf_component" component={Pdf_component} />
+
+                <Stack.Screen options={{ headerShown: false }} name="Offline_user" component={Offline_user} />
             </Stack.Navigator>
         </NavigationContainer>
     );

@@ -1,4 +1,4 @@
-export const ip = "http://192.168.2.2:3080/"
+export const ip = "http://192.168.2.200:3080/"
 // export const ip = "http://172.20.10.2:3080/"
 
 // export const ip = "http://172.20.10.2:3080/"

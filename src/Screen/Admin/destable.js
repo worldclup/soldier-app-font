@@ -101,10 +101,14 @@ class destable extends Component {
                                         return (
                                             <NativeBaseProvider key={index} >
                                                 <Box border="1" borderRadius="md" style={{
-                                                    borderWidth: 2,
+                                                    borderWidth: 4,
                                                     borderRadius: 4,
-                                                    borderColor: "white"
+                                                    borderColor: '#284d1c',
+                                                    backgroundColor: 'white',
+                                                    marginTop: 50,
+
                                                 }}>
+                                                    <View style={{ marginTop: 20 }} />
                                                     <Box px="4" pt="4">
                                                         <Text style={{
                                                             fontSize: 15,

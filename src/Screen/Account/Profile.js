@@ -3,7 +3,7 @@ import {
     View,
     ImageBackground,
     StyleSheet,
-    TextInput,
+    // TextInput,
     Text,
     TouchableOpacity,
 } from 'react-native';
@@ -20,6 +20,8 @@ import { get, post } from '../../service/service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import moment from 'moment';
+
+import { TextInput } from 'react-native-paper';
 
 class Profile extends Component {
 
@@ -189,6 +191,8 @@ class Profile extends Component {
         }
     }
 
+    buttom
+
     render() {
         return (
             <ImageBackground
@@ -209,26 +213,54 @@ class Profile extends Component {
                             <Text style={styles.TextLabelHeader}>ข้อมูลส่วนตัว</Text>
                         </View>
 
-                        <View style={{ alignItems: 'center' }}>
+                        <View style={{
+                            marginTop: 50,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <Text style={{
+                                fontSize: 18
+                            }}>
+                                รหัสผู้ใช้งาน :
+                                <Text style={{ color: 'red' }}>
+                                    {' '}
+                                    {this.state.profile_data ? this.state.profile_data.username : null}
+                                </Text>
+                            </Text>
 
+                            <View style={{ marginBottom: 10 }} />
                             <TouchableOpacity
                                 onPress={() => { this.props.navigation.navigate('Pdf_component', { screen: 'PDF', params: { data: this.state.profile_data.pdf_text } }) }}
-                                style={styles.buttonRegister}
+                                style={{
+                                    elevation: 8,
+                                    backgroundColor: "#488833",
+                                    borderRadius: 10,
+                                    paddingVertical: 10,
+                                    paddingHorizontal: 12,
+                                    width: 200
+                                }}
                                 disabled={this.disabled_pdf()}
 
                             >
-                                <Text styles={styles.buttonText}>
-                                    {"ตรวจสอบข้อมูล PDX"}
+                                <Text style={{
+                                    fontSize: 15,
+                                    color: "#fff",
+                                    // fontWeight: "bold",
+                                    alignSelf: "center",
+                                    textTransform: "uppercase"
+                                }}>
+                                    ตรวจข้อมูล PDX
                                 </Text>
                             </TouchableOpacity>
-
+                            <Text style={{ color: 'red', fontSize: 14, marginTop: 10 }}> * กรณี PDX ข้อมูลไม่ถูกต้อง หรือมีการเปลี่ยนแปลง * </Text>
+                            <Text style={{ color: 'red', fontSize: 14, marginTop: 5 }}> * พิมข้อมูลลงช่องข้างล่าง หรือติดต่อที่ ฝกพ.ร.17 * </Text>
                         </View>
 
                         <View style={{ marginBottom: 40 }} />
                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                             <View
                                 style={{
-                                    backgroundColor: 'white',
+                                    backgroundColor: '#0f1d0b',
                                     width: '80%',
                                     height: 3,
                                     borderRadius: 1,
@@ -236,32 +268,51 @@ class Profile extends Component {
                                 }}
                             />
                         </View>
-                        <View style={{ marginBottom: 20 }} />
+                        <View style={{ marginBottom: 40 }} />
+
+                        <Text style={{ fontSize: 14, marginBottom: 10, marginLeft: '10%' }}> - พิมข้อมูล หรือติดต่อที่ ฝกพ.ร.17</Text>
 
                         <View style={{ alignItems: 'center' }}>
-                            <View style={styles.DescriptionTextInput}>
-                                <TextInput
-                                    style={styles.TextInput}
-                                    placeholder={'ข้อมูลเพิ่มเติม'}
-                                    // keyboardType="numeric"
-                                    underlineColorAndroid="transparent"
-                                    onChangeText={e => this.handleChange(e, 'description')}
-                                />
+                            {/* <View style={styles.DescriptionTextInput}> */}
+                            <TextInput
+                                style={styles.TextInput}
+                                label='ข้อมูลเพิ่มเติม'
+                                // keyboardType="numeric"
+                                underlineColorAndroid="transparent"
+                                onChangeText={e => this.handleChange(e, 'description')}
+                            />
+                            {/* </View> */}
+
+                            <View style={{
+                                marginTop: 10,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                                <TouchableOpacity
+                                    style={{
+                                        elevation: 8,
+                                        backgroundColor: "#1260CC",
+                                        borderRadius: 10,
+                                        paddingVertical: 10,
+                                        paddingHorizontal: 12,
+                                        width: 200
+                                    }}
+                                    disabled={this.state.hide_box}
+                                    onPress={() => { this.upload_description() }}
+                                >
+
+                                    <Text style={{
+                                        fontSize: 15,
+                                        color: "#fff",
+                                        // fontWeight: "bold",
+                                        alignSelf: "center",
+                                        textTransform: "uppercase"
+                                    }}>
+                                        บันทึก ข้อมูลที่ส่งเพิ่มเติม
+                                    </Text>
+                                </TouchableOpacity>
                             </View>
-
-                            <TouchableOpacity
-                                style={styles.buttonDescription}
-                                disabled={this.state.hide_box}
-                                onPress={() => { this.upload_description() }}
-                            >
-
-                                <Text styles={styles.buttonText}>
-                                    {'บันทึก'}
-                                </Text>
-                            </TouchableOpacity>
-
                         </View>
-
                     </View >
                 </KeyboardAwareScrollView >
             </ImageBackground>
@@ -286,28 +337,10 @@ const styles = StyleSheet.create({
         marginTop: 10,
         left: 10,
     },
-    Viewcontainer: {
-        flex: 1,
-        justifyContent: 'center',
-    },
     TextInput: {
-        height: 40,
-        marginTop: 10,
-        width: 300,
-        borderRadius: 20,
-        fontSize: 13,
-        left: 10,
-        flex: 1,
-        color: 'black',
-    },
-    ContainerTextInput: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        // alignItems: 'center',
-        backgroundColor: '#fff',
-        height: 40,
-        marginTop: 10,
-        width: 300,
+        width: '80%',
+        backgroundColor: "#ffffff"
+
     },
     DescriptionTextInput: {
         flexDirection: 'row',
