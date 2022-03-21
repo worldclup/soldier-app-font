@@ -10,7 +10,7 @@ import {
     ScrollView,
     Dimensions,
     Image,
-    Button
+    ActivityIndicator,
 } from 'react-native';
 
 import { TextInput } from 'react-native-paper';
@@ -26,14 +26,19 @@ var jwt_decode = require('jwt-decode');
 
 class Login extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             username: null,
             password: false,
             showPassword: null,
+            isLoading: true
         };
     }
+
+    // componentDidMount() {
+    //     this.setState({ isLoading: true })
+    // }
 
     handleChange = (e, name) => {
         this.setState({
@@ -47,6 +52,7 @@ class Login extends Component {
             username: this.state.username,
             password: this.state.password
         }
+        this.setState({ isLoading: false })
 
         let decode = null
         try {
@@ -55,7 +61,7 @@ class Login extends Component {
                     AsyncStorage.setItem('user_token', res.token);
                     decode = jwt_decode(res.token);
                     // console.log("decode : ", decode)
-
+                    this.setState({ isLoading: true })
                     if (decode.type == 0) {
                         this.props.navigation.navigate('Drawer_admin', { screen: 'Drawer_admin' })
                     }
@@ -65,14 +71,18 @@ class Login extends Component {
 
                 } else {
                     alert(res.error_message);
+                    this.setState({ isLoading: true })
+
                 }
             })
         } catch (error) {
             alert('กรุณาเชื่อมต่อ อินเตอร์เน็ตที่ ฝกพ.ร.17');
+            this.setState({ isLoading: true })
         }
     }
 
     render() {
+
         return (
             <ScrollView
                 style={{ flex: 1, backgroundColor: 'white' }}
@@ -81,7 +91,7 @@ class Login extends Component {
                 <ImageBackground
                     source={require('../../image/BackGround_white.jpg')}
                     style={{
-                        height: Dimensions.get('window').height / 2.5,
+                        height: Dimensions.get('window').height / 2,
                     }}
                 >
                     <View style={styles.brandView}>
@@ -90,15 +100,23 @@ class Login extends Component {
                             source={require('../../image/reg17.png')}
                         />
                         <Text style={{
-                            color: 'black',
                             fontSize: 30,
-                            fontWeight: 'bold',
                             textTransform: 'uppercase',
+                            color: 'gold',
+                            fontSize: 40,
+                            fontFamily: 'Kanit-Black',
+                            textShadowColor: 'black',
+                            textShadowOffset: { width: -1, height: 3 },
+                            textShadowRadius: 5
                         }}>กรมทหารราบที่ ๑๗</Text>
                         <Text style={{
-                            color: 'black',
+                            color: 'gold',
                             fontSize: 20,
-                            textTransform: 'uppercase'
+                            textTransform: 'uppercase',
+                            fontFamily: 'Kanit-Black',
+                            textShadowColor: 'black',
+                            textShadowOffset: { width: -1, height: 3 },
+                            textShadowRadius: 5
                         }}>ค่ายขุนเจืองธรรมิกราช</Text>
                     </View>
                 </ImageBackground>
@@ -106,15 +124,15 @@ class Login extends Component {
                 <View style={{
                     flex: 1.5,
                     backgroundColor: 'white',
-                    bottom: 20,
+                    bottom: 30,
                     borderTopStartRadius: 30,
                     borderTopEndRadius: 30
                 }}>
                     <View style={{ padding: 20 }} >
-                        <Text style={{ color: 'black', fontSize: 25 }}>ยินดีต้อนรับ</Text>
-                        <Text style={{ color: 'red', fontSize: 15 }}> * กรณีรหัสเข้าสู่ระบบไม่ได้ ติดต่อ ฝกม.ร.17 โดยด่วน </Text>
+                        <Text style={{ color: 'black', fontSize: 25, fontFamily: 'Kanit-Light' }}>ยินดีต้อนรับ</Text>
+                        <Text style={{ color: 'red', fontSize: 15, fontFamily: 'Kanit-Light' }}> * กรณีรหัสเข้าสู่ระบบไม่ได้ ติดต่อ ฝกม.ร.17 โดยด่วน </Text>
                         <View style={{ marginTop: 50 }}>
-                            <Text>รหัสผู้ใช้งาน</Text>
+                            <Text style={{ fontFamily: 'Kanit-Light' }}>รหัสผู้ใช้งาน</Text>
                             <TextInput
                                 style={styles.TextInput}
                                 // placeholderTextColor="#A6A6A6"
@@ -129,7 +147,7 @@ class Login extends Component {
                         </View>
 
                         <View style={{ marginTop: 20 }}>
-                            <Text>รหัสผ่าน</Text>
+                            <Text style={{ fontFamily: 'Kanit-Light' }}>รหัสผ่าน</Text>
                             <TextInput
                                 style={styles.TextInput}
                                 secureTextEntry={true}
@@ -158,15 +176,21 @@ class Login extends Component {
                                     width: 200
                                 }}
                             >
-                                <Text style={{
-                                    fontSize: 18,
-                                    color: "#fff",
-                                    // fontWeight: "bold",
-                                    alignSelf: "center",
-                                    textTransform: "uppercase"
-                                }}>
-                                    เข้าสู่ระบบ
-                                </Text>
+                                {this.state.isLoading ?
+                                    <Text style={{
+                                        fontSize: 18,
+                                        color: "#fff",
+                                        // fontWeight: "bold",
+                                        alignSelf: "center",
+                                        textTransform: "uppercase",
+                                        fontFamily: 'Kanit-Light'
+                                    }}>
+                                        เข้าสู่ระบบ
+                                    </Text>
+                                    :
+                                    <ActivityIndicator color={"#fff"} />
+                                }
+
                             </TouchableOpacity>
                         </View>
 
@@ -200,7 +224,8 @@ class Login extends Component {
                                     color: "#fff",
                                     // fontWeight: "bold",
                                     alignSelf: "center",
-                                    textTransform: "uppercase"
+                                    textTransform: "uppercase",
+                                    fontFamily: 'Kanit-Light'
                                 }}>
                                     เข้าสู่ระบบออฟไลน์
                                 </Text>

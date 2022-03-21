@@ -114,7 +114,8 @@ class userlist extends Component {
                         <View style={{ marginTop: 20 }} />
                         <Box px="4" pb="4">
                             <Text style={{
-                                fontSize: 15,
+                                fontSize: 17,
+                                fontFamily: 'Kanit-Light',
                             }}>รหัสประจำตัวทหาร : {this.state.user_info.username}</Text>
                         </Box>
                         <Box px="4" pb="4">
@@ -125,7 +126,7 @@ class userlist extends Component {
                                     onPress={() => { this.props.navigation.navigate('Pdf_component', { screen: 'PDF', params: { data: this.state.user_info.pdf_text } }) }}
                                     disabled={this.disabled_pdf(this.state.user_info.pdf_text)}
                                 >
-                                    <Text style={{ color: 'white' }}>
+                                    <Text style={{ color: 'white', fontFamily: 'Kanit-Light', }}>
                                         ดูข้อมูล PDX
                                     </Text>
                                 </Icon.Button>
@@ -214,11 +215,12 @@ class userlist extends Component {
 
                             >
                                 <Text style={{
-                                    fontSize: 15,
+                                    fontSize: 18,
                                     color: "#fff",
                                     // fontWeight: "bold",
                                     alignSelf: "center",
-                                    textTransform: "uppercase"
+                                    textTransform: "uppercase",
+                                    fontFamily: 'Kanit-Light',
                                 }}>
                                     ยืนยัน
                                 </Text>
@@ -236,74 +238,6 @@ class userlist extends Component {
                             {this.show_user_info()}
 
                         </View>
-
-
-
-                        {/* <View style={styles.ContainerTextInput}>
-                            <TextInput
-                                style={styles.TextInput}
-                                placeholderTextColor="#A6A6A6"
-                                placeholder={'เลขรหัสทหารของกำลังพล'}
-                                selectionColor="white"
-                                color="black"
-                                maxLength={10}
-                                underlineColorAndroid="transparent"
-                                type="search"
-                                onChangeText={this.filterName}
-                            />
-                        </View>
-
-                        <View style={{ marginBottom: 20 }} />
-
-                        {!this.state.all_user_info ?
-                            null
-                            :
-                            <>
-                                {this.state.all_user_info.map((ele, index) => {
-                                    return (
-                                        <NativeBaseProvider key={index}>
-                                            <Box border="1" borderRadius="md" style={{
-                                                borderWidth: 2,
-                                                borderRadius: 4,
-                                                borderColor: "white"
-                                            }}>
-                                                <Box px="4" pt="4">
-                                                    <Text style={{
-                                                        fontSize: 15,
-                                                    }}>ลำดับที่ {index + 1}</Text>
-                                                </Box>
-                                                <Box px="4" pb="4">
-                                                    <Text style={{
-                                                        fontSize: 15,
-                                                    }}>รหัสประจำตัวทหาร : {ele.username}</Text>
-                                                </Box>
-                                                <Box px="4" pb="4">
-                                                    <View style={{ width: 120 }}>
-                                                        <Icon.Button
-                                                            name="file-pdf-o"
-                                                            backgroundColor="#3b5998"
-                                                            onPress={() => { this.props.navigation.navigate('Pdf_component', { screen: 'PDF', params: { data: JSON.parse(ele.pdf_text) } }) }}
-                                                            disabled={this.disabled_pdf(ele.pdf_text)}
-                                                        >
-                                                            <Text style={{ color: 'white' }}>
-                                                                ดูข้อมูล PDX
-                                                            </Text>
-                                                        </Icon.Button>
-                                                    </View>
-                                                </Box>
-                                            </Box>
-                                            <View style={{ marginBottom: 20 }} />
-                                        </NativeBaseProvider>
-
-                                    );
-
-                                })}
-                            </>
-                        }
-                        <View style={{ marginBottom: 40 }} /> */}
-
-
-
                     </View >
                 </KeyboardAwareScrollView >
             </ImageBackground >
@@ -321,16 +255,13 @@ const styles = StyleSheet.create({
         // marginTop: 10,
         // left: 10,
     },
-    Viewcontainer: {
-        flex: 1,
-        justifyContent: 'center',
-    },
     TextLabeluser: {
         right: '20%',
         color: 'black',
         borderEndWidth: 20,
         // fontWeight: 'bold',
-        fontSize: 17,
+        fontSize: 19,
+        fontFamily: 'Kanit-Light',
     },
     TextInput: {
         backgroundColor: '#fff',
@@ -338,63 +269,14 @@ const styles = StyleSheet.create({
         width: 300,
 
     },
-    ContainerTextInput: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        // alignItems: 'center',
-        backgroundColor: '#fff',
-        height: 40,
-        marginTop: 10,
-        width: 300,
-    },
-    DescriptionTextInput: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        // alignItems: 'center',
-        backgroundColor: '#fff',
-        height: 100,
-        marginTop: 10,
-        width: 300,
-    },
-    buttonRegister: {
-        width: '100%',
-        width: 300,
-        height: 40,
-        borderRadius: 10,
-        backgroundColor: "#00FF00",
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 50,
-    },
-    buttonDescription: {
-        width: '100%',
-        width: 300,
-        height: 40,
-        borderRadius: 10,
-        backgroundColor: "#00FF00",
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 50,
-    },
-    TextLabel: {
-        // right: 100,
-        color: 'black',
-        // borderEndWidth: 20,
-        // fontWeight: 'bold',
-        fontSize: 15,
-    },
     TextLabelHeader: {
-        color: 'black',
-        borderEndWidth: 20,
-        fontWeight: 'bold',
-        fontSize: 30,
-    },
-    DataTableRowStyle: {
-        // backgroundColor: '#DAF7A6',
-        // paddingLeft: 15,
-        // paddingRight: 15,
-        borderColor: 'green',
-        borderWidth: 1,
+        color: 'gold',
+        // fontWeight: 'bold',
+        fontSize: 40,
+        fontFamily: 'Kanit-Black',
+        textShadowColor: 'black',
+        textShadowOffset: { width: -1, height: 3 },
+        textShadowRadius: 5
     },
 });
 

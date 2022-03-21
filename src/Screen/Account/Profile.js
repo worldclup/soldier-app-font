@@ -6,6 +6,7 @@ import {
     // TextInput,
     Text,
     TouchableOpacity,
+    ActivityIndicator,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -33,6 +34,7 @@ class Profile extends Component {
             pdf_data: '',
             hide_box: true,
             description: '',
+            isLoading: true,
         }
     }
 
@@ -65,7 +67,8 @@ class Profile extends Component {
                     if (res.success) {
                         this.setState({
                             profile_data: res.result,
-                            pdf_data: res.result.pdf_text
+                            pdf_data: res.result.pdf_text,
+                            isLoading: false
                         })
 
                     } else {
@@ -183,6 +186,7 @@ class Profile extends Component {
     disabled_pdf = () => {
         let obj = this.state.pdf_data
         // console.log(obj)
+
         if (obj == null) {
             return true;
         }
@@ -190,8 +194,6 @@ class Profile extends Component {
             return false;
         }
     }
-
-    buttom
 
     render() {
         return (
@@ -219,7 +221,8 @@ class Profile extends Component {
                             alignItems: 'center'
                         }}>
                             <Text style={{
-                                fontSize: 18
+                                fontSize: 18,
+                                fontFamily: 'Kanit-Light'
                             }}>
                                 รหัสผู้ใช้งาน :
                                 <Text style={{ color: 'red' }}>
@@ -242,18 +245,24 @@ class Profile extends Component {
                                 disabled={this.disabled_pdf()}
 
                             >
-                                <Text style={{
-                                    fontSize: 15,
-                                    color: "#fff",
-                                    // fontWeight: "bold",
-                                    alignSelf: "center",
-                                    textTransform: "uppercase"
-                                }}>
-                                    ตรวจข้อมูล PDX
-                                </Text>
+                                {this.state.isLoading ?
+                                    <ActivityIndicator color={"#fff"} />
+                                    :
+                                    <Text style={{
+                                        fontSize: 15,
+                                        color: "#fff",
+                                        // fontWeight: "bold",
+                                        alignSelf: "center",
+                                        textTransform: "uppercase",
+                                        fontFamily: 'Kanit-Light'
+                                    }}>
+                                        ตรวจข้อมูล PDX
+                                    </Text>
+                                }
+
                             </TouchableOpacity>
-                            <Text style={{ color: 'red', fontSize: 14, marginTop: 10 }}> * กรณี PDX ข้อมูลไม่ถูกต้อง หรือมีการเปลี่ยนแปลง * </Text>
-                            <Text style={{ color: 'red', fontSize: 14, marginTop: 5 }}> * พิมข้อมูลลงช่องข้างล่าง หรือติดต่อที่ ฝกพ.ร.17 * </Text>
+                            <Text style={{ color: 'red', fontSize: 14, marginTop: 10, fontFamily: 'Kanit-Light' }}> * กรณี PDX ข้อมูลไม่ถูกต้อง หรือมีการเปลี่ยนแปลง * </Text>
+                            <Text style={{ color: 'red', fontSize: 14, marginTop: 5, fontFamily: 'Kanit-Light' }}> * พิมข้อมูลลงช่องข้างล่าง หรือติดต่อที่ ฝกพ.ร.17 * </Text>
                         </View>
 
                         <View style={{ marginBottom: 40 }} />
@@ -270,10 +279,9 @@ class Profile extends Component {
                         </View>
                         <View style={{ marginBottom: 40 }} />
 
-                        <Text style={{ fontSize: 14, marginBottom: 10, marginLeft: '10%' }}> - พิมข้อมูล หรือติดต่อที่ ฝกพ.ร.17</Text>
+                        <Text style={{ fontSize: 14, marginBottom: 10, marginLeft: '10%', fontFamily: 'Kanit-Light' }}> - พิมข้อมูล หรือติดต่อที่ ฝกพ.ร.17</Text>
 
                         <View style={{ alignItems: 'center' }}>
-                            {/* <View style={styles.DescriptionTextInput}> */}
                             <TextInput
                                 style={styles.TextInput}
                                 label='ข้อมูลเพิ่มเติม'
@@ -281,8 +289,6 @@ class Profile extends Component {
                                 underlineColorAndroid="transparent"
                                 onChangeText={e => this.handleChange(e, 'description')}
                             />
-                            {/* </View> */}
-
                             <View style={{
                                 marginTop: 10,
                                 justifyContent: 'center',
@@ -306,7 +312,8 @@ class Profile extends Component {
                                         color: "#fff",
                                         // fontWeight: "bold",
                                         alignSelf: "center",
-                                        textTransform: "uppercase"
+                                        textTransform: "uppercase",
+                                        fontFamily: 'Kanit-Light'
                                     }}>
                                         บันทึก ข้อมูลที่ส่งเพิ่มเติม
                                     </Text>
@@ -323,13 +330,6 @@ class Profile extends Component {
 }
 
 const styles = StyleSheet.create({
-    Container: {
-        justifyContent: 'center',
-        flex: 1,
-        alignItems: 'center',
-        marginTop: 10,
-        color: 'red',
-    },
     ContainerHeader: {
         justifyContent: 'center',
         flex: 1,
@@ -339,50 +339,16 @@ const styles = StyleSheet.create({
     },
     TextInput: {
         width: '80%',
-        backgroundColor: "#ffffff"
-
-    },
-    DescriptionTextInput: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        // alignItems: 'center',
-        backgroundColor: '#fff',
-        height: 100,
-        marginTop: 10,
-        width: 300,
-    },
-    buttonRegister: {
-        width: '50%',
-        // width: 300,
-        height: 40,
-        borderRadius: 10,
-        backgroundColor: "#00FF00",
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 50,
-    },
-    buttonDescription: {
-        width: '30%',
-        // width: 300,
-        height: 40,
-        borderRadius: 10,
-        backgroundColor: "#00FF00",
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 30,
-    },
-    TextLabel: {
-        // right: 100,
-        color: 'black',
-        // borderEndWidth: 20,
-        // fontWeight: 'bold',
-        fontSize: 15,
+        backgroundColor: "#ffffff",
     },
     TextLabelHeader: {
-        color: 'black',
-        borderEndWidth: 20,
-        fontWeight: 'bold',
-        fontSize: 30,
+        color: 'gold',
+        // fontWeight: 'bold',
+        fontSize: 40,
+        fontFamily: 'Kanit-Black',
+        textShadowColor: 'black',
+        textShadowOffset: { width: -1, height: 3 },
+        textShadowRadius: 5
     },
 });
 
